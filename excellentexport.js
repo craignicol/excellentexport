@@ -149,14 +149,9 @@ ExcellentExport = (function() {
         excel: function(anchor, table, name) {
             table = get(table);
             var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML};
-            //var hrefvalue = uri.excel + base64(format(template.excel, ctx));
             var excelObject = window.URL.createObjectURL(new Blob([format(template.excel, ctx)]), { type: 'application/vnd.ms-excel'});
             anchor.href = excelObject
-
-            //var obj_url = excelObject;
-            //var iframe = document.getElementById('viewer');
-            //iframe.setAttribute('src', obj_url);
-            // window.URL.revokeObjectURL(obj_url);            
+         
             // Return true to allow the link to work
             return true;
         },
@@ -170,8 +165,8 @@ ExcellentExport = (function() {
             }
             table = get(table);
             var csvData = tableToCSV(table);
-            var hrefvalue = uri.csv + base64(csvData);
-            anchor.href = hrefvalue;
+            var csvObject = window.URL.createObjectURL(new Blob([csvData]), { type: 'application/csv'});
+            anchor.href = csvObject
             return true;
         }
     };
