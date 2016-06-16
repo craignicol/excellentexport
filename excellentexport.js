@@ -99,7 +99,9 @@ ExcellentExport = (function() {
     var csvDelimiter = ",";
     var csvNewLine = "\r\n";
     var base64 = function(s) {
-        return window.btoa(window.unescape(encodeURIComponent(s)));
+        var euc = encodeURIComponent(s);
+        var wue = window.unescape(euc)
+        return window.btoa(wue);
     };
     var format = function(s, c) {
         return s.replace(new RegExp("{(\\w+)}", "g"), function(m, p) {
@@ -147,8 +149,14 @@ ExcellentExport = (function() {
         excel: function(anchor, table, name) {
             table = get(table);
             var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML};
-            var hrefvalue = uri.excel + base64(format(template.excel, ctx));
-            anchor.href = hrefvalue;
+            //var hrefvalue = uri.excel + base64(format(template.excel, ctx));
+            var excelObject = window.URL.createObjectURL(new Blob([format(template.excel, ctx)]), { type: 'application/vnd.ms-excel'});
+            anchor.href = excelObject
+
+            //var obj_url = excelObject;
+            //var iframe = document.getElementById('viewer');
+            //iframe.setAttribute('src', obj_url);
+            // window.URL.revokeObjectURL(obj_url);            
             // Return true to allow the link to work
             return true;
         },
